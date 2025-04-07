@@ -8,7 +8,7 @@ import Welcome from "./Welcome";
 import Spinner from "./Spinner";
 import { Container, Row, Col } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-const API_URL = process.env.REACT_APP_API_URL || "http://127.0.0.1:5050";
+import { API_URL } from "../config";
 
 const ImageGallery = () => {
   const [word, setWord] = useState("");
