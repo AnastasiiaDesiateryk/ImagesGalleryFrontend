@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-// import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Header from "./Header";
 import Search from "./Search";
@@ -17,34 +16,30 @@ const ImageGallery = () => {
   const [loading, setLoading] = useState(true);
   const token = localStorage.getItem("token");
 
-  // 🔐 Проверка: если токена нет — не пускаем
+  // 🔐
 
   const getSavedImages = async () => {
     try {
-      // const res = await axios.get(`${API_URL}/images`);
       const res = await axios.get(`${API_URL}/images`, {
         headers: {
-          Authorization: `Bearer ${token}`, // ✅ передаём токен
+          Authorization: `Bearer ${token}`,
         },
       });
       setImages(res.data || []);
       setLoading(false);
-      // toast.success("Saved images downloaded");
     } catch (error) {
       console.log(error);
-      // toast.error(error.message);
     }
   };
 
-  // useEffect(() => getSavedImages(), []); код стущука не работает ниже работает
   useEffect(() => {
     const fetchImages = async () => {
       await getSavedImages();
     };
 
-    fetchImages(); // ⬅️ Вызовем её вручную
+    fetchImages();
   }, []);
-  // до сюда
+
   const handleSearchSubmit = async (e) => {
     e.preventDefault();
 
@@ -55,17 +50,14 @@ const ImageGallery = () => {
         },
       });
       setImages([{ ...res.data, title: word }, ...images]);
-      // toast.info(`New image ${word.toUpperCase()} was found`);
     } catch (error) {
-      // ниже код нужен для того чтобы разлогинить пользователя если истек токен работает только при попытке что то сделать самый простой вариант
+      // remove token
       if (error.response && error.response.status === 401) {
         localStorage.removeItem("token");
-        window.location.href = "/login"; // Принудительно на страницу логина
+        window.location.href = "/login"; // on login webpage
       } else {
         console.log(error);
       }
-      //console.log(error);
-      // toast.error(error.message);
     }
 
     setWord("");
@@ -73,30 +65,21 @@ const ImageGallery = () => {
 
   const handleDeleteImage = async (id) => {
     try {
-      // const res = await axios.delete(`${API_URL}/images/${id}`);
       const res = await axios.delete(`${API_URL}/images/${id}`, {
         headers: {
-          Authorization: `Bearer ${token}`, // ✅ токен для удаления
+          Authorization: `Bearer ${token}`, // ✅ token
         },
       });
       if (res.data?.deleted_id) {
-        // toast.warn(
-        //   `Image ${images
-        //     .find((i) => i.id === id)
-        //     .title.toUpperCase()} was deleted`
-        // );
         setImages(images.filter((image) => image.id !== id));
       }
     } catch (error) {
-      // ниже код нужен для того чтобы разлогинить пользователя если истек токен работает только при попытке что то сделать самый простой вариант
       if (error.response && error.response.status === 401) {
         localStorage.removeItem("token");
-        window.location.href = "/login"; // Принудительно на страницу логина
+        window.location.href = "/login"; // on login webpage
       } else {
         console.log(error);
       }
-      //console.log(error);
-      // toast.error(error.message);
     }
   };
 
@@ -105,10 +88,9 @@ const ImageGallery = () => {
     imageToBeSaved.saved = true;
 
     try {
-      // const res = await axios.post(`${API_URL}/images`, imageToBeSaved);
       const res = await axios.post(`${API_URL}/images`, imageToBeSaved, {
         headers: {
-          Authorization: `Bearer ${token}`, // ✅ токен для сохранения
+          Authorization: `Bearer ${token}`, // ✅
         },
       });
       if (res.data?.inserted_id) {
@@ -117,18 +99,15 @@ const ImageGallery = () => {
             image.id === id ? { ...image, saved: true } : image
           )
         );
-        // toast.info(`Image ${imageToBeSaved.title.toUpperCase()} was saved`);
       }
     } catch (error) {
       // ниже код нужен для того чтобы разлогинить пользователя если истек токен работает только при попытке что то сделать самый простой вариант
       if (error.response && error.response.status === 401) {
         localStorage.removeItem("token");
-        window.location.href = "/login"; // Принудительно на страницу логина
+        window.location.href = "/login"; // // on login webpage
       } else {
         console.log(error);
       }
-      //console.log(error);
-      // toast.error(error.message);
     }
   };
   const navigate = useNavigate();
@@ -178,7 +157,6 @@ const ImageGallery = () => {
           </Container>
         </>
       )}
-      {/* <ToastContainer position="bottom-right" /> */}
     </div>
   );
 };
