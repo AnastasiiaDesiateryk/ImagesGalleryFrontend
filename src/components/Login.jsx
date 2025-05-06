@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { API_URL } from "../config";
 import { useNavigate } from "react-router-dom";
 import Header from "./Header";
@@ -8,6 +8,16 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const savedUsername = localStorage.getItem("savedUsername");
+    const savedPassword = localStorage.getItem("savedPassword");
+    if (savedUsername) setUsername(savedUsername);
+    if (savedPassword) setPassword(savedPassword);
+
+    localStorage.removeItem("savedUsername");
+    localStorage.removeItem("savedPassword");
+  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -43,7 +53,7 @@ export default function Login() {
       >
         <div
           style={{
-            background: "#ffffff",
+            background: "#e6f0ff",
             padding: "2rem",
             borderRadius: "1rem",
             boxShadow: "0 4px 20px rgba(0,0,0,0.1)",

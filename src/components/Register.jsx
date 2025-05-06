@@ -18,9 +18,10 @@ export default function Register() {
       });
       const data = await res.json();
       if (res.ok) {
-        // ✅ просто сообщение и редирект
+        localStorage.setItem("savedUsername", username);
+        localStorage.setItem("savedPassword", password);
         setMessage("Registration successful");
-        navigate("/gallery");
+        navigate("/login");
       } else {
         setMessage(data.message || "Registration failed");
       }
